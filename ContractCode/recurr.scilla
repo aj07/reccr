@@ -1,0 +1,116 @@
+scilla_version 0
+
+
+(***************************************************)
+(*               Associated library                *)
+(***************************************************)
+library AkunLedger
+
+let one_msg =
+  fun (msg: Message) =>
+  let nil_msg = Nil {Message} in
+  Cons {Message} msg nil_msg
+
+(* error codes library *)
+let code_success = Uint32 0
+let code_emply_not_found = Uint32 1
+let code_not_managerized = Uint32 2
+let code_invalid_params = Uint32 3
+let code_emplyid_exist = Uint32 4
+
+(***************************************************)
+(*             The contract definition             *)
+(***************************************************)
+contract AkunLedger
+(owner: ByStr20,
+companyName: String)
+
+
+field members: Map ByStr20 (Pair (String) (Uint32))
+                = Emp ByStr20 (Pair (String) (Uint32))
+
+(* lastEmplyID: last emply ID issued *)
+field lastEmplyID: Option Uint32 = None {Uint32}
+
+(* Emplyinventory will store a Map of Emplys                          *)
+field emplyInventory: Map Uint32 (Pair (String) (String))
+                    = Emp Uint32 (Pair (String) (String))
+
+
+
+
+transition addEmply(emply_title: String, manager: String, emplyID: Uint32)
+
+    emplys <- emplyInventory;
+    (* new_emply_id = let one = Uint32 1 in builtin add last_emply_id one;*)
+
+    emplyExist = builtin contains emplys emplyID;
+    match emplyExist with
+    | True =>
+        msg = {_tag: "";
+                    _recipient: _sender;
+                    _amount: Uint128 0;
+                    code: code_emplyid_exist};
+        msgs = one_msg msg;
+        send msgs
+    | False =>
+     
+        new_emply = Pair {(String) (String)} emply_title manager;
+
+        (* Add the new emply to the emply_inventory Map, with EmplyID as the key*)
+        emplyInventory[emplyID] := new_emply;
+
+        tmp = Some {Uint32} emplyID;
+        lastEmplyID := tmp;
+
+        msg = {_tag: ""; 
+                _recipient: _sender; 
+                _amount: Uint128 0; 
+                code: code_success};
+
+        msgs = one_msg msg;
+        send msgs 
+    end
+end
+
+
+
+transition removeEmply(emply_id: Uint32)
+    
+    delete emplyInventory[emply_id]
+
+end
+
+
+
+transition updateEmply(emply_id: Uint32, emply_title: String, manager: String)
+
+  
+    emplys <- emplyInventory;
+    exist = builtin contains emplys emply_id;
+    match exist with
+    | False =>
+        (* Emply ID is not found in the records. *)
+        msg = {_tag: ""; 
+                _recipient: _sender; 
+                _amount: Uint128 0; 
+                code: code_emply_not_found};
+        msgs = one_msg msg;
+        send msgs
+    | True =>
+     
+       
+        new_emply = Pair {(String) (String)} emply_title manager;
+       
+        emplyInventory[emply_id] := new_emply;
+
+        msg = {_tag: ""; 
+                _recipient: _sender; 
+                _amount: Uint128 0; 
+                code: code_success};
+        msgs = one_msg msg;
+        send msgs
+    end
+
+
+end
