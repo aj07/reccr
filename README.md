@@ -1,7 +1,6 @@
-# reccr
+# Reccr | AkunLedger
 (Decentralised Brex , Xero, Quickbooks)
 
-==========
 Problem:
 ===========
 
