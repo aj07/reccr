@@ -18,10 +18,10 @@ A humble attempt to build a decentralized unified platform where one can manage 
 1. Enter the details about your employees.
 2. Assign the role and manager.
 3. Put the payment.
-4. Automate the payment on an hourly/weekly/daily/monthly basis. 
+4. Automate the payment on an hourly/weekly/daily/monthly basis through using XSGD.
 5. Many more.. 
 
-1. Video Link : 
+1. Video Link : https://www.youtube.com/watch?v=ZRtw6IEoIP8&list=PLg5pLlPofztql_qDUy9JS2sg4pePGOTkU&index=3
 
 
 
