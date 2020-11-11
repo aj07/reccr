@@ -1,5 +1,6 @@
 # Reccr | AkunLedger
 (Decentralised Brex , Xero, Quickbooks)
+Update: This project won the runner up at the Zilliqa hack. Link: https://twitter.com/zilliqa/status/1326502626238853125
 
 Problem:
 ===========
